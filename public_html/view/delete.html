@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 삭제하기</title>
+</head>
+<body>
+<script>
+function delete_start() {
+    var user_id = document.getElementById('userid').value;
+    var user_pwd = document.getElementById('userpassword').value;
+
+    var url = "http://localhost/index.php?play=delete&user_id="+user_id+"&user_pwd="+user_pwd;
+    location.replace(url);
+}
+</script>
+1. 사용자 ID:
+<input type="text" name="userid" id="userid">
+<br />
+2. 암호
+<input type="text" name="userpassword" id="userpassword">
+<br />
+3.
+<input type="button" name="button_delete" value="삭제하기" onclick="delete_start()">
+</body>
+</html>

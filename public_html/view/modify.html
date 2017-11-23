@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:input="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 수정하기</title>
+</head>
+<body>
+<script>
+function idSearch_start() {
+
+    var inputKeyword = document.getElementById('inputKeyword').value;
+    var url = "http://localhost/model/searchId_ajax.php?play=searchId&inputKeyword=" + inputKeyword;
+
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+            var result = xmlhttp.responseText;
+            var userInfoArray = JSON.parse(result);
+            var result_searchId = document.getElementById('result_searchId');
+            if (userInfoArray['userid'] == inputKeyword) {
+
+                result_searchId.innerText = "성공했습니다.";
+                result_searchId.setAttribute('result', 1);
+                result_searchId.style.color = 'green';
+
+                var userInfoTable = document.getElementById('userInfoTable');
+
+                if(userInfoTable['classification'] == 'student')
+                    userInfoTable['classification'] == '학생';
+                else userInfoTable['classification'] == '교직원';
+
+                if(userInfoTable['gender'] == 'Male')
+                    userInfoTable['gender'] == '남성';
+                else userInfoTable['gender'] == '여성';
+
+                var infoOrder = ['userid','name','password','classification','gender','phone','email'];
+
+                for(var i = 1; i <= 7; i++) {
+                    if(i == 4 || i == 5){
+                        if(userInfoTable['classification'] == 'staff')
+                            userInfoTable.children[3].children[0].selectedIndex=0;
+                        else
+                            userInfoTable.children[3].children[0].selectedIndex=1;
+                        if(userInfoTable['gender'] == 'Male')
+                            userInfoTable.children[4].children[0].selectedIndex=0;
+                        else
+                            userInfoTable.children[4].children[0].selectedIndex=1;
+                    }
+                    else
+                        userInfoTable.children[i - 1].children[0].value = userInfoArray[infoOrder[i-1]];
+                }
+            }
+            else {
+                result_searchId.innerText = "존재하지 않는 ID입니다.";
+                result_searchId.setAttribute('result', 0);
+                result_searchId.style.color = 'red';
+            }
+
+        }
+
+    }
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+function modify_start() {
+    if(document.getElementById('result_searchId').getAttribute('result') == 1){
+        var userInfoTable = document.getElementById('userInfoTable');
+
+        var user_id =  userInfoTable.children[0].children[0].value;
+        var user_name =   userInfoTable.children[1].children[0].value;
+        var user_pwd =   userInfoTable.children[2].children[0].value;
+        var user_class =   userInfoTable.children[3].children[0].value;
+        var user_gender =  userInfoTable.children[4].children[0].value;
+        var user_phone =   userInfoTable.children[5].children[0].value;
+        var user_email =   userInfoTable.children[6].children[0].value;
+
+
+
+
+
+        var url = "http://localhost/index.php?play=modify&user_id=" + user_id + "&user_name=" + user_name + "&user_pwd=" + user_pwd + "&user_class=" +user_class  + "&user_gender=" + user_gender  + "&user_phone=" + user_phone  + "&user_email=" + user_email
+
+        location.replace(url);
+
+
+
+    }
+
+}
+</script>
+
+<b>사용자 정보 수정</b><br>
+
+<div>
+<input type="text" name="inputKeyword" id="inputKeyword" value="<?php isset($_POST['searchId']) ? $_POST['searchId'] : null?>">
+<input type="button" name="button_searchId" id="button_searchId" value="사용자 ID 조회" onclick="idSearch_start()">
+    <div id="result_searchId" result=0 style="display: inline;"></div>
+</div>
+
+<ol id="userInfoTable">
+    <li>사용자 ID: <input type="text" name="userid"></li>
+    <li>이름: <input type="text" name="username"></li>
+    <li>암호: <input type="text" name="userpassword"></li>
+    <li>구분: <select name="classification">
+        <option value="staff" >교직원</option>
+        <option value="student" selected>학생</option>
+    </select></li>
+    <li>성별: <select name="gender">
+        <option value="male">남성</option>
+        <option value="female" selected>여성</option>
+    </select></li>
+    <li>전화번호: <input type="text" name="phone"></li>
+    <li>이메일: <input type="text" name="email"></li>
+</ol>
+<input type="submit" value="수정하기" onclick="modify_start()">
+
+</body>
+</html>

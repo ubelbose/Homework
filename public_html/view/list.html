@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 리스트</title>
+</head>
+<body>
+
+    <table border=1>
+        <tr><td colspan=8>회원 정보</td></tr>
+        <tr><td>No</td><td>user_id</td><td>user_classification</td><td>user_name</td><td>user_gender</td><td>user_password</td><td>user_phone</td><td>user_email</td></tr>
+
+        <?php
+
+
+        $result = $this->modelObj->sendQuery($sql);
+
+        for($i = $page_start; $i < $result_num_rows && $i < $page_end; $i++){
+        $result_array = mysqli_fetch_row($result);
+            echo "<tr>";
+            for($j = 0; $j < 8; $j++){
+                echo "<td>$result_array[$j]</td>";
+            }
+            echo "</tr>";
+        }
+
+
+       ?>
+<tr>
+    <td colspan="8" style="text-align: center">
+        <?php
+
+            $num_pages = ceil($result_num_rows/5);
+            $page_start = isset($_GET['page']) ? $_GET['page'] : 0;
+
+            if($_GET['page']>0)
+            echo "<a href='http://localhost/index.php?play=list&page=".max($_GET['page']-3,0)."'><\t</a>";
+
+            for($i = $_GET['page']; $i <= min($num_pages-1,$_GET['page']+2); $i++){
+                echo "<a href='http://localhost/index.php?play=list&page=$i'>";
+                echo ($i+1)."\t";
+                echo"</a>";
+
+
+            }
+
+        if($_GET['page'] < $num_pages -1 )
+        echo "<a href='http://localhost/index.php?play=list&page=".min($_GET['page']+3,$num_pages-1)."'>></a>";
+
+        ?>
+
+    </td>
+</tr>
+
+
+
+    </table>
+</body>
+</html>

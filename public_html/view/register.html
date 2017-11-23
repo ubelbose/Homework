@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 등록</title>
+
+</head>
+<body>
+<script>
+    function register_start() {
+        var play = "register";
+        var user_info = new Array();
+        var message_obj = document.getElementById('message');
+        var null_excption = false;
+
+        user_info[0] = document.getElementById('userid').value;
+        user_info[1] = document.getElementById('username').value;
+        user_info[2] = document.getElementById('userpassword').value;
+        user_info[3] = document.getElementById('classification').value;
+        user_info[4] = document.getElementById('gender').value;
+        user_info[5] = document.getElementById('phone').value;
+        user_info[6] = document.getElementById('email').value;
+
+        var array_name = ['id','name','pwd','class','gender','phone','email'];
+
+
+        message_obj.innerText = "";
+
+        for(var i = 0; i< 7; i++){
+            if(user_info[i] == ""){
+                message_obj.innerHTML += (array_name[i] + ' is null<br />');
+                null_excption = true;
+
+
+            }
+        }
+
+        if(!null_excption){
+            location.replace("http://localhost/index.php?play=register&user_id="+user_info[0]+"&user_pwd="+user_info[1]+"&user_name="+user_info[2]+"&user_class="+user_info[3]+"&user_gender="+user_info[4]+"&user_phone="+user_info[5]+"&user_email="+user_info[6]);
+        }
+        else
+            alert("입력하지 않은 항목이 있습니다");
+
+    }
+</script>
+<!--사용자 입력 -->
+<div id="message"></div>
+    <b>사용자 정보 등록</b><br>
+    <ol>
+        <li>사용자 ID: <input type="text" name="userid" id="userid"></li>
+        <li>이름: <input type="text" name="username" id="username"></li>
+        <li>암호: <input type="text" name="userpassword" id="userpassword"></li>
+        <li>구분: <select name="classification" id="classification">
+                    <option value="staff" >교직원</option>
+                    <option value="student" selected>학생</option>
+                    </select></li>
+        <li>성별: <select name="gender" id="gender">
+                    <option value="male">남성</option>
+                    <option value="female" selected>여성</option>
+                    </select></li>
+        <li>전화번호: <input type="text" name="phone" id="phone"></li>
+        <li>이메일: <input type="text" name="email" id="email"></li>
+    </ol>
+    <input type="button" value="등록하기" onclick="register_start()">
+
+</body>
+</html>
